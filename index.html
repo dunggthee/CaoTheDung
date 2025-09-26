@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Live Stage 2025 - Countdown to the Ultimate Experience">
+    <meta name="theme-color" content="#00ffff">
+    <title>Countdown Timer - Live Stage</title>
+    
+    <!-- Preload fonts for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="background-overlay"></div>
+    
+    <div class="bg-instructions" role="banner" aria-label="Background customization instructions">
+        💡 Thay background: Upload ảnh vào thư mục và sửa đường dẫn trong CSS
+    </div>
+    
+    <div class="background-effects" aria-hidden="true">
+        <div class="laser-grid"></div>
+        <div class="light-beam"></div>
+        <div class="light-beam"></div>
+        <div class="light-beam"></div>
+        <div class="light-beam"></div>
+        <div class="floating-particles"></div>
+        <div class="floating-particles"></div>
+        <div class="floating-particles"></div>
+    </div>
+    
+    <!-- Header badges -->
+    <div class="official-badge" role="banner">OFFICIAL</div>
+    <div class="logo" role="banner">LIVE</div>
+    
+    <!-- Main content -->
+    <main class="container">
+        <header>
+            <h1 class="main-title">LIVE STAGE</h1>
+            <p class="subtitle">Countdown to Event</p>
+        </header>
+        
+        <!-- Countdown timer -->
+        <section class="countdown-container" role="timer" aria-label="Event countdown timer">
+            <div class="countdown-box">
+                <div class="countdown-number" id="days" aria-label="Days remaining">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="hours" aria-label="Hours remaining">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="minutes" aria-label="Minutes remaining">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-number" id="seconds" aria-label="Seconds remaining">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </section>
+        
+        <div class="event-info">
+            <p>🎵 Get ready for an amazing experience</p>
+        </div>
+        
+        <nav class="toggle-buttons">
+            <button class="toggle-btn" onclick="scrollToContent()" aria-label="Scroll to video and messaging content">
+                🎬💬 View Content
+            </button>
+        </nav>
+    </main>
+    
+    <!-- Content Section -->
+    <section class="content-section" id="contentSection">
+        <!-- Video Section -->
+        <article class="video-section" id="videoSection">
+            <div class="video-container" role="img" aria-label="Live Stage 2025 preview video">
+                <!-- Video Upload Section -->
+                <div class="video-upload-section" id="videoUploadSection">
+                    <div class="upload-placeholder">
+                        <div class="upload-icon">📹</div>
+                        <h3>Upload Your Video</h3>
+                        <p>Click to upload or drag & drop video file</p>
+                        <input type="file" id="videoUpload" accept="video/*" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('videoUpload').click()">
+                            Choose Video File
+                        </button>
+                        <div class="supported-formats">
+                            Supported: MP4, WebM, MOV (Max 100MB)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Default Auto Video (shown when no video uploaded) -->
+                <div class="auto-video" id="defaultVideo">
+                    🎵 LIVE STAGE 2025<br/>
+                    <small style="font-size: 0.8rem; opacity: 0.8;">Upload your video above</small>
+                    <div class="video-progress" aria-hidden="true"></div>
+                </div>
+                
+                <!-- Actual Video Player (hidden by default) -->
+                <video 
+                    id="videoPlayer" 
+                    class="actual-video" 
+                    controls 
+                    preload="metadata"
+                    style="display: none;"
+                    aria-label="Uploaded video"
+                >
+                    Your browser does not support the video tag.
+                </video>
+                
+                <div class="video-overlay" aria-hidden="true" id="videoOverlay"></div>
+                
+                <!-- Video Controls -->
+                <div class="video-controls">
+                    <button class="video-action" onclick="toggleLike()" aria-label="Like this video" title="Like">
+                        <svg class="heart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/>
+                        </svg>
+                        <span class="like-count" id="likeCount">128</span>
+                    </button>
+                    <button class="video-action" onclick="focusComment()" aria-label="Comment on this video" title="Comment">
+                        <svg class="comment-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z"/>
+                        </svg>
+                        <span class="comment-count" id="commentCount">45</span>
+                    </button>
+                    <button class="video-action" onclick="shareVideo()" aria-label="Share this video" title="Share">
+                        <svg class="share-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"/>
+                        </svg>
+                    </button>
+                    <!-- New Remove Video Button -->
+                    <button class="video-action remove-video" onclick="removeVideo()" aria-label="Remove uploaded video" title="Remove Video" style="display: none;" id="removeVideoBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="video-info">
+                <h3 class="video-title" id="videoTitle">🎵 Live Stage 2025 - Upload your video to get started</h3>
+                
+                <!-- Video Upload Progress -->
+                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Uploading... 0%</div>
+                </div>
+                
+                <div class="comment-section" id="commentSection" role="log" aria-label="Video comments">
+                    <div class="comment">
+                        <div class="comment-author">@musicfan2025</div>
+                        <div class="comment-text">Không thể chờ đợi được nữa! 🔥</div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-author">@stagelover</div>
+                        <div class="comment-text">Countdown đẹp quá! ✨</div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-author">@viewer123</div>
+                        <div class="comment-text">Khi nào diễn ra vậy?</div>
+                    </div>
+                </div>
+                <div class="comment-input-section">
+                    <label for="commentInput" class="sr-only">Write a comment</label>
+                    <input 
+                        class="comment-input" 
+                        id="commentInput" 
+                        placeholder="Viết bình luận..." 
+                        maxlength="100"
+                        aria-label="Comment input"
+                    >
+                    <button class="comment-submit" onclick="addComment()" aria-label="Submit comment">
+                        Gửi
+                    </button>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Messenger Section -->
+        <aside class="messenger-section" id="messengerSection">
+            <div class="messenger-container">
+                <header class="messenger-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M8.5,9A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 8.5,12A1.5,1.5 0 0,0 10,10.5A1.5,1.5 0 0,0 8.5,9M15.5,9A1.5,1.5 0 0,0 14,10.5A1.5,1.5 0 0,0 15.5,12A1.5,1.5 0 0,0 17,10.5A1.5,1.5 0 0,0 15.5,9M12,17.23C10.25,17.23 8.71,16.5 7.81,15.42L9.23,14C9.68,14.72 10.75,15.23 12,15.23C13.25,15.23 14.32,14.72 14.77,14L16.19,15.42C15.29,16.5 13.75,17.23 12,17.23Z"/>
+                    </svg>
+                    💬 Send Message to Live Stage
+                </header>
+                <div class="messenger-body">
+                    <label for="messageInput" class="sr-only">Message content</label>
+                    <textarea 
+                        class="message-input" 
+                        id="messageInput" 
+                        placeholder="Viết tin nhắn của bạn...&#10;&#10;Ví dụ:&#10;- Hỏi về thời gian sự kiện&#10;- Đăng ký tham gia&#10;- Chia sẻ cảm xúc của bạn&#10;- Gửi lời chúc"
+                        aria-label="Message input"
+                    ></textarea>
+                    <button class="send-button" onclick="sendMessage()" aria-label="Send message">
+                        📤 Gửi Tin Nhắn
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <!-- Screen reader only content -->
+    <div class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;">
+        <p>Live Stage 2025 countdown timer showing days, hours, minutes, and seconds remaining until the event.</p>
+    </div>
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
