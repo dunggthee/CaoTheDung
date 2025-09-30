@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown | CaoTheDung</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --apple-white: #ffffff;
+            --apple-gray: #f5f5f7;
+            --apple-dark: #1d1d1f;
+            --apple-blue: #0071e3;
+            --apple-light-blue: #2997ff;
+            --apple-border: #d2d2d7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --mobile-breakpoint: 768px;
+            --tablet-breakpoint: 1024px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.47059;
+            color: var(--text-primary);
+            background: var(--apple-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 1.25rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--apple-border);
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            color: var(--apple-blue);
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+        }
+
+        .contact-btn {
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 980px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .contact-btn:hover {
+            background: var(--apple-light-blue);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3);
+        }
+
+        /* Countdown Section */
+        .countdown-section {
+            padding: clamp(2rem, 8vw, 4rem) 1.25rem;
+            text-align: center;
+            background: var(--apple-gray);
+            flex: 1;
+        }
+
+        .countdown-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--apple-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: var(--text-secondary);
+            margin-bottom: clamp(2rem, 6vw, 3rem);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .target-date {
+            margin-bottom: clamp(2rem, 6vw, 3rem);
+        }
+
+        .target-date h2 {
+            font-size: clamp(1.25rem, 5vw, 1.5rem);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        #targetDateDisplay {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            color: var(--apple-blue);
+            font-weight: 600;
+        }
+
+        .countdown-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: clamp(0.75rem, 3vw, 1.25rem);
+            max-width: 600px;
+            margin: 0 auto clamp(2rem, 6vw, 3rem);
+            padding: 0 1rem;
+        }
+
+        .countdown-item {
+            background: var(--apple-white);
+            border-radius: 20px;
+            padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 3vw, 1.25rem);
+            text-align: center;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border: 1px solid var(--apple-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 113, 227, 0.05), transparent);
+            transition: var(--transition);
+        }
+
+        .countdown-item:hover::before {
+            left: 100%;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .countdown-value {
+            font-size: clamp(1.75rem, 6vw, 3rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-label {
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Stories Section */
+        .stories-section {
+            flex: 1;
+            padding: clamp(2rem, 6vw, 4rem) 1.25rem;
+            background: var(--apple-white);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            text-align: center;
+            margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stories-container {
+            display: flex;
+            gap: clamp(0.75rem, 3vw, 1.25rem);
+            overflow-x: auto;
+            padding: 1rem 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--apple-blue) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .stories-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .stories-container::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        .stories-container::-webkit-scrollbar-thumb {
+            background: var(--apple-blue);
+            border-radius: 10px;
+        }
+
+        .story-reel {
+            flex: 0 0 auto;
+            width: clamp(85px, 20vw, 120px);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .story-reel:hover {
+            transform: scale(1.08);
+        }
+
+        .story-avatar {
+            width: clamp(70px, 15vw, 90px);
+            height: clamp(70px, 15vw, 90px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--apple-blue);
+            padding: 2px;
+            margin: 0 auto 0.75rem;
+            background: var(--apple-white);
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 113, 227, 0.2);
+        }
+
+        .story-reel:hover .story-avatar {
+            border-color: var(--apple-light-blue);
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+            transform: scale(1.1);
+        }
+
+        .story-username {
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
+            color: var(--text-primary);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 0.25rem;
+        }
+
+        /* Story Modal */
+        .story-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--apple-dark);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .story-content {
+            position: relative;
+            width: 100%;
+            max-width: min(400px, 95vw);
+            height: min(80vh, 700px);
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--apple-dark);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .story-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: clamp(1rem, 3vw, 1.25rem);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+            z-index: 10;
+        }
+
+        .story-header-avatar {
+            width: clamp(35px, 8vw, 40px);
+            height: clamp(35px, 8vw, 40px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--apple-white);
+            flex-shrink: 0;
+        }
+
+        .story-header-username {
+            color: var(--apple-white);
+            font-weight: 600;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .story-time {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        .story-progress {
+            position: absolute;
+            top: clamp(0.75rem, 2vw, 1rem);
+            left: clamp(1rem, 3vw, 1.25rem);
+            right: clamp(1rem, 3vw, 1.25rem);
+            display: flex;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--apple-white);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .story-actions {
+            position: absolute;
+            bottom: clamp(1.5rem, 4vw, 2rem);
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: clamp(1.5rem, 4vw, 2rem);
+            z-index: 10;
+        }
+
+        .story-action-btn {
+            background: none;
+            border: none;
+            color: var(--apple-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+        }
+
+        .story-action-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .story-action-btn i {
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+        }
+
+        .story-action-text {
+            font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+            opacity: 0.9;
+        }
+
+        .close-story {
+            position: absolute;
+            top: clamp(1rem, 3vw, 1.25rem);
+            right: clamp(1rem, 3vw, 1.25rem);
+            background: none;
+            border: none;
+            color: var(--apple-white);
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 20;
+            padding: 0.5rem;
+        }
+
+        .close-story:hover {
+            transform: scale(1.2);
+            color: #ff3b30;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--apple-white);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: 20px;
+            width: 100%;
+            max-width: min(500px, 95vw);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--apple-border);
+            animation: modalSlideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .modal-title {
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.25rem;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: clamp(1.25rem, 3vw, 1.5rem);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: clamp(0.75rem, 2vw, 1rem);
+            border-radius: 12px;
+            border: 1px solid var(--apple-border);
+            background: var(--apple-white);
+            color: var(--text-primary);
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            padding: clamp(0.75rem, 2vw, 1rem) 1.5rem;
+            border-radius: 980px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--apple-light-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: clamp(1.5rem, 4vw, 2rem) 1.25rem;
+            color: var(--text-secondary);
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            background: var(--apple-gray);
+            border-top: 1px solid var(--apple-border);
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) {
+            .countdown-item:hover {
+                transform: none;
+            }
+            
+            .story-reel:hover {
+                transform: none;
+            }
+            
+            .story-reel:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* Landscape Mobile Optimizations */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .countdown-section {
+                padding: 1.5rem 1.25rem;
+            }
+            
+            .countdown-display {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 400px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .story-content {
+                height: 95vh;
+                max-width: 95vw;
+            }
+        }
+
+        /* High DPI Screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .countdown-item {
+                border-width: 0.5px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .contact-btn,
+            .story-reel,
+            .modal,
+            .story-modal {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-hourglass-half"></i>
+                    <span>Đợi Tui Ra Quân</span>
+                </div>
+                <button class="contact-btn" id="openModal">
+                    <i class="fas fa-paper-plane"></i> Liên Hệ
+                </button>
+            </div>
+        </header>
+        
+        <section class="countdown-section">
+            <div class="countdown-content">
+                <h1>Đếm Ngược Thông Minh</h1>
+                <p class="subtitle">Rồi ngày này cũng tới kkk</p>
+                
+                <div class="target-date">
+                    <h2>Đang đếm ngược đến</h2>
+                    <div id="targetDateDisplay">1 tháng 2, 2026</div>
+                </div>
+                
+                <div class="countdown-display">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Ngày</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Giờ</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Phút</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Giây</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="stories-section">
+            <h2 class="section-title">Ngựa Ngựa Up Story</h2>
+            <div class="stories-container" id="storiesContainer">
+                <!-- Stories will be loaded here -->
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2026 Đếm Ngược Ngày Ra Quân. Được thiết kế để hoạt động hoàn hảo trên mọi thiết bị.</p>
+        </footer>
+    </div>
+
+    <!-- Story Modal -->
+    <div class="story-modal" id="storyModal">
+        <div class="story-content">
+            <video class="story-video" id="storyVideo" playsinline>
+                Ôi thôi! Lỗi rồi bạn ơi!
+            </video>
+            <div class="story-progress" id="storyProgress">
+                <!-- Progress bars will be added here -->
+            </div>
+            <div class="story-header">
+                <img class="story-header-avatar" id="storyHeaderAvatar" src="" alt="">
+                <div>
+                    <div class="story-header-username" id="storyHeaderUsername"></div>
+                    <div class="story-time" id="storyTime"></div>
+                </div>
+            </div>
+            <button class="close-story" id="closeStory">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="story-actions">
+                <button class="story-action-btn" id="likeStory">
+                    <i class="fas fa-heart"></i>
+                    <span class="story-action-text">Thích</span>
+                </button>
+                <button class="story-action-btn" id="nextStory">
+                    <i class="fas fa-forward"></i>
+                    <span class="story-action-text">Tiếp</span>
+                </button>
+                <button class="story-action-btn" id="shareStory">
+                    <i class="fas fa-share"></i>
+                    <span class="story-action-text">Chia sẻ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Muốn nói gì với tui nào?</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="userName">Wát do nêm</label>
+                    <input type="text" id="userName" class="form-control" placeholder="Nhập tên của bạn" required>
+                </div>
+                <div class="form-group">
+                    <label for="userMessage">Nói gì đi</label>
+                    <textarea id="userMessage" class="form-control" rows="4" placeholder="Nhập tin nhắn của bạn ở đây..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fab fa-facebook-messenger"></i> Gửi cho tui ở đây nè!
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set target date (fixed in code)
+        const targetDate = new Date('2026-02-01T00:00:00');
+        
+        // DOM Elements
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const targetDateDisplay = document.getElementById('targetDateDisplay');
+        const storiesContainer = document.getElementById('storiesContainer');
+        const storyModal = document.getElementById('storyModal');
+        const storyVideo = document.getElementById('storyVideo');
+        const storyProgress = document.getElementById('storyProgress');
+        const storyHeaderAvatar = document.getElementById('storyHeaderAvatar');
+        const storyHeaderUsername = document.getElementById('storyHeaderUsername');
+        const storyTime = document.getElementById('storyTime');
+        const closeStory = document.getElementById('closeStory');
+        const nextStoryBtn = document.getElementById('nextStory');
+        const likeStoryBtn = document.getElementById('likeStory');
+        const contactModal = document.getElementById('contactModal');
+        const openModalBtn = document.getElementById('openModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const messageForm = document.getElementById('messageForm');
+        
+        // Current story index
+        let currentStoryIndex = 0;
+        let progressInterval;
+        
+        // Format and display the target date
+        function formatDate(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('vi-VN', options);
+        }
+        
+        // Update countdown display
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+            
+            if (distance < 0) {
+                // Countdown finished
+                daysElement.textContent = '00';
+                hoursElement.textContent = '00';
+                minutesElement.textContent = '00';
+                secondsElement.textContent = '00';
+                
+                // Add celebration effect
+                document.querySelector('.countdown-section').style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                return;
+            }
+            
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Update display
+            daysElement.textContent = days.toString().padStart(2, '0');
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Stories data với video từ thư mục assets
+        const stories = [
+            {
+                id: 1,
+                username: "ảo chưa kkk",
+                avatar: "https://images.unsplash.com/photo-1759158313114-824c6303374c?q=80&w=1924&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://res.cloudinary.com/dlnxrxaos/video/upload/v1759157858/copy_062210E5-D304-483A-8777-C14B175A764E_jbhqcn.mov",
+                time: "3 giờ trước"
+            },
+            {
+                id: 2,
+                username: "😭", 
+                avatar: "https://images.unsplash.com/photo-1759208134928-428bbf988d5d?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://res.cloudinary.com/dlnxrxaos/video/upload/v1759208059/copy_664A6AC0-985A-46B5-8B87-3BDF789E702E_vertnt.mov",
+                time: "1 ngày trước"
+            },
+            {
+                id: 3,
+                username: "🇻🇳",
+                avatar: "https://images.unsplash.com/photo-1759208451653-b896b9a69e06?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://images.unsplash.com/photo-1759208451653-b896b9a69e06?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                time: "2 ngày trước"
+            },
+            {
+                id: 4,
+                username: "Nấu ăn tại nhà",
+                avatar: "assets/images/avatar4.jpg",
+                videoUrl: "assets/videos/story4.mp4",
+                time: "3 ngày trước"
+            },
+            {
+                id: 5,
+                username: "Tiệc cùng bạn bè",
+                avatar: "assets/images/avatar5.jpg",
+                videoUrl: "assets/videos/story5.mp4",
+                time: "4 ngày trước"
+            }
+        ];
+        
+        // Render stories
+        function renderStories() {
+            storiesContainer.innerHTML = '';
+            
+            stories.forEach((story, index) => {
+                const storyElement = document.createElement('div');
+                storyElement.className = 'story-reel';
+                storyElement.innerHTML = `
+                    <img src="${story.avatar}" alt="${story.username}" class="story-avatar" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCA5MCA5MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjkwIiBoZWlnaHQ9IjkwIiByeD0iNDUiIGZpbGw9IiMwMDcxZTMiIGZpbGwtb3BhY2l0eT0iMC4xIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIwIiBmaWxsPSIjMDA3MWUzIiBmaWxsLW9wYWNpdHk9IjAuMyIvPgo8cGF0aCBkPSJNNDUgNTVMNTEgNDlMNTUgNTVMNDkgNjFMNDUgNTVaIiBmaWxsPSIjMDA3MWUzIi8+Cjwvc3ZnPgo='">
+                    <div class="story-username">${story.username}</div>
+                `;
+                
+                storyElement.addEventListener('click', () => {
+                    openStory(index);
+                });
+                
+                // Add touch event for better mobile experience
+                storyElement.addEventListener('touchstart', (e) => {
+                    e.currentTarget.style.transform = 'scale(0.95)';
+                });
+                
+                storyElement.addEventListener('touchend', (e) => {
+                    e.currentTarget.style.transform = '';
+                });
+                
+                storiesContainer.appendChild(storyElement);
+            });
+        }
+        
+        // Open story
+        function openStory(index) {
+            currentStoryIndex = index;
+            const story = stories[index];
+            
+            // Reset video
+            storyVideo.src = story.videoUrl;
+            storyVideo.currentTime = 0;
+            
+            storyHeaderAvatar.src = story.avatar;
+            storyHeaderUsername.textContent = story.username;
+            storyTime.textContent = story.time;
+            
+            // Create progress bars
+            storyProgress.innerHTML = '';
+            stories.forEach((s, i) => {
+                const progressBar = document.createElement('div');
+                progressBar.className = 'progress-bar';
+                
+                const progress = document.createElement('div');
+                progress.className = 'progress';
+                progress.id = `progress-${s.id}`;
+                
+                // Mark current story as active
+                if (i === index) {
+                    progressBar.style.background = 'rgba(255, 255, 255, 0.5)';
+                }
+                
+                progressBar.appendChild(progress);
+                storyProgress.appendChild(progressBar);
+            });
+            
+            storyModal.style.display = 'flex';
+            
+            // Play video and start progress
+            const playPromise = storyVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    startProgressAnimation();
+                }).catch(error => {
+                    console.log('Video play failed:', error);
+                    // Fallback for autoplay restrictions
+                    storyVideo.controls = true;
+                    alert('Vui lòng nhấn play để xem video. Trình duyệt yêu cầu tương tác người dùng để phát video.');
+                });
+            }
+            
+            // Add event listener for video end
+            storyVideo.addEventListener('ended', goToNextStory);
+        }
+        
+        // Start progress animation
+        function startProgressAnimation() {
+            // Clear any existing interval
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            const progressElement = document.getElementById(`progress-${stories[currentStoryIndex].id}`);
+            let width = 0;
+            
+            // Calculate interval based on video duration
+            const videoDuration = storyVideo.duration || 10; // Fallback to 10 seconds
+            const intervalTime = (videoDuration * 1000) / 100; // Divide by 100 for percentage
+            
+            progressInterval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(progressInterval);
+                    // Video ended, go to next story automatically
+                    goToNextStory();
+                } else {
+                    width += 1;
+                    progressElement.style.width = `${width}%`;
+                }
+            }, intervalTime);
+        }
+        
+        // Go to next story
+        function goToNextStory() {
+            if (currentStoryIndex < stories.length - 1) {
+                openStory(currentStoryIndex + 1);
+            } else {
+                // If last story, close modal
+                closeStoryModal();
+            }
+        }
+        
+        // Close story modal
+        function closeStoryModal() {
+            storyModal.style.display = 'none';
+            storyVideo.pause();
+            storyVideo.removeEventListener('ended', goToNextStory);
+            storyVideo.controls = false;
+            
+            // Clear progress interval
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+        }
+        
+        // Modal functionality
+        openModalBtn.addEventListener('click', () => {
+            contactModal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', () => {
+            contactModal.style.display = 'none';
+        });
+        
+        closeStory.addEventListener('click', closeStoryModal);
+        
+        // Next story button
+        nextStoryBtn.addEventListener('click', goToNextStory);
+        
+        // Like button functionality
+        likeStoryBtn.addEventListener('click', () => {
+            likeStoryBtn.classList.toggle('active');
+            if (likeStoryBtn.classList.contains('active')) {
+                likeStoryBtn.innerHTML = '<i class="fas fa-heart" style="color: #ff2a6d;"></i><span class="story-action-text">Đã thích</span>';
+            } else {
+                likeStoryBtn.innerHTML = '<i class="fas fa-heart"></i><span class="story-action-text">Thích</span>';
+            }
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+            if (e.target === storyModal) {
+                closeStoryModal();
+            }
+        });
+        
+        // Handle form submission
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const userName = document.getElementById('userName').value;
+            const userMessage = document.getElementById('userMessage').value;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(`Chào ní, tui là ${userName}. ${userMessage}`);
+            
+            // Replace with your Facebook profile ID or username
+            const facebookProfile = "gnud0312";
+            
+            // Create Facebook Messenger URL
+            const messengerUrl = `https://m.me/${facebookProfile}?text=${encodedMessage}`;
+            
+            // Open Messenger in a new tab
+            window.open(messengerUrl, '_blank');
+            
+            // Reset form and close modal
+            messageForm.reset();
+            contactModal.style.display = 'none';
+            
+            // Show success message
+            alert(`Tin nhắn của bạn đã được gửi thành công! 🎉`);
+        });
+        
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (storyModal.style.display === 'flex') {
+                    closeStoryModal();
+                }
+                if (contactModal.style.display === 'flex') {
+                    contactModal.style.display = 'none';
+                }
+            }
+        });
+        
+        // Initialize
+        function init() {
+            // Set initial date display
+            targetDateDisplay.textContent = formatDate(targetDate);
+            
+            // Update countdown immediately
+            updateCountdown();
+            
+            // Render stories
+            renderStories();
+            
+            // Update countdown every second
+            setInterval(updateCountdown, 1000);
+            
+            // Add loading state
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.3s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        }
+        
+        // Start the application when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
