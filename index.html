@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <title>Countdown | CaoTheDung</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -619,7 +636,7 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-hourglass-half"></i>
-                    <span>Đợi Tui Ra Quân</span>
+                    <span>Ngày Trở Lại</span>
                 </div>
                 <button class="contact-btn" id="openModal">
                     <i class="fas fa-paper-plane"></i> Liên Hệ
@@ -814,21 +831,21 @@
                 id: 3,
                 username: "🇻🇳",
                 avatar: "https://images.unsplash.com/photo-1759208451653-b896b9a69e06?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                videoUrl: "https://images.unsplash.com/photo-1759208451653-b896b9a69e06?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://res.cloudinary.com/dlnxrxaos/video/upload/v1759209672/copy_C96AB6E7-86F7-4F4F-90A6-DC6F845807FB_xaj3mo.mov",
                 time: "2 ngày trước"
             },
             {
                 id: 4,
-                username: "Nấu ăn tại nhà",
-                avatar: "assets/images/avatar4.jpg",
-                videoUrl: "assets/videos/story4.mp4",
+                username: "😜",
+                avatar: "https://images.unsplash.com/photo-1759211296053-b816f3e74673?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://res.cloudinary.com/dlnxrxaos/video/upload/v1759210918/copy_269BF7F2-F856-4BD8-AC8D-F02FE1F785A7_iugrxz.mov",
                 time: "3 ngày trước"
             },
             {
                 id: 5,
-                username: "Tiệc cùng bạn bè",
-                avatar: "assets/images/avatar5.jpg",
-                videoUrl: "assets/videos/story5.mp4",
+                username: "0312",
+                avatar: "https://images.unsplash.com/photo-1759211151383-fd3904b1ed2a?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                videoUrl: "https://res.cloudinary.com/dlnxrxaos/video/upload/v1759212057/copy_6AD68469-9E69-4F36-866B-1B4F513575B6_wugzlc.mov",
                 time: "4 ngày trước"
             }
         ];
@@ -1006,7 +1023,7 @@
             const userMessage = document.getElementById('userMessage').value;
             
             // Encode message for URL
-            const encodedMessage = encodeURIComponent(`Chào ní, tui là ${userName}. ${userMessage}`);
+            const encodedMessage = encodeURIComponent(` Chào ní, tui là  ${userName}. ${userMessage}`);
             
             // Replace with your Facebook profile ID or username
             const facebookProfile = "gnud0312";
